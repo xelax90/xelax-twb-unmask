@@ -1,0 +1,22 @@
+{
+    "name": "xelax90/xelax-twb-unmask",
+    "description": "Package created to allow usage of both: ZF2 and zf2-twb-bundle form view helpers together",
+    "require": {
+        "neilime/zf2-twb-bundle": "dev-master"
+    },
+    "license": "GPL-v2.0",
+    "authors": [
+        {
+            "name": "xelax90",
+            "email": "schurix@gmx.de",
+            "homepage": "https://github.com/xelax90",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "XelaxTwbUnmask": "src"
+        },
+        "classmap" : ["Module.php"]
+    },
+}
