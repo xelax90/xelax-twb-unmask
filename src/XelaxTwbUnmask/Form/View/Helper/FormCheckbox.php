@@ -20,22 +20,20 @@
 
 namespace XelaxTwbUnmask\Form\View\Helper;
 
-use TwbBundle\Form\View\Helper\TwbBundleFormElement;
+use TwbBundle\Form\View\Helper\TwbBundleFormCheckbox;
+use Zend\Form\ElementInterface;
 
 /**
- * Description of FormElement
+ * Adding bootstrap-switch functionality to FormCheckbox
  *
  * @author schurix
  */
-class FormElement extends TwbBundleFormElement{
-	public function __construct(\TwbBundle\Options\ModuleOptions $options) {
-		parent::__construct($options);
-		$this->addClass('TwbBundle\Form\Element\StaticElement', 'formStatic');
-		$this->addClass('TwbBundle\Form\Element\Button', 'twbFormButton');
-		$this->addClass('Zend\Form\Element\Collection', 'twbFormCollection');
-		$this->addType('checkbox', 'twbFormCheckbox');
-		$this->addType('multi_checkbox', 'twbFormMultiCheckbox');
-		$this->addType('radio', 'twbFormRadio');
-		$this->addType('submit', 'twbFormSubmit');
+class FormCheckbox extends TwbBundleFormCheckbox{
+	public function render(ElementInterface $element){
+		if($element->getOption('use-switch')){
+			$element->setAttribute('data-switch', '1');
+		}
+		return parent::render($element);
 	}
+
 }

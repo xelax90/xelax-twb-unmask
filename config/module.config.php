@@ -9,8 +9,8 @@ return array(
             'twbForm' => 'XelaxTwbUnmask\Form\View\Helper\Form', // needed to overwrite getXXXHelper functions
             //'twbForm' => 'TwbBundle\Form\View\Helper\TwbBundleForm',
             'twbFormButton' => 'TwbBundle\Form\View\Helper\TwbBundleFormButton',
-            'twbFormSubmit' => 'TwbBundle\Form\View\Helper\TwbBundleFormButton',
-            'twbFormCheckbox' => 'TwbBundle\Form\View\Helper\TwbBundleFormCheckbox',
+            'twbFormSubmit' => 'XelaxTwbUnmask\Form\View\Helper\FormSubmit',
+            'twbFormCheckbox' => 'XelaxTwbUnmask\Form\View\Helper\FormCheckbox',
             'twbFormCollection' => 'XelaxTwbUnmask\Form\View\Helper\FormCollection', // needed to overwrite getXXXHelper functions
             //'twbFormCollection' => 'TwbBundle\Form\View\Helper\TwbBundleFormCollection',
             'twbFormElementErrors' => 'TwbBundle\Form\View\Helper\TwbBundleFormElementErrors',
@@ -35,12 +35,12 @@ return array(
 			//----------- Rename twb factory -----------
 			'twbFormElement' => function($sm){
 				$options = $sm->getServiceLocator()->get('TwbBundle\Options\ModuleOptions');
-				return new \XelaxTwbUnmask\Form\View\Helper\FormElement($options);
+				return new Form\View\Helper\FormElement($options);
 			},
 			//'twbFormElement' => 'TwbBundle\Form\View\Helper\Factory\TwbBundleFormElementFactory',
 			//----------- Create custom factory as replacement -----------
 			'formElement' => function($sm){
-				return new \Zend\Form\View\Helper\FormElement();
+				return new Zend\Form\View\Helper\FormElement();
 			},
 		),
     ),
