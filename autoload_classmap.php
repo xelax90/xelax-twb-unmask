@@ -5,5 +5,7 @@ return array(
   'XelaxTwbUnmask\Form\View\Helper\Form'           => __DIR__ . '/src/XelaxTwbUnmask/Form/View/Helper/Form.php',
   'XelaxTwbUnmask\Form\View\Helper\FormCollection' => __DIR__ . '/src/XelaxTwbUnmask/Form/View/Helper/FormCollection.php',
   'XelaxTwbUnmask\Form\View\Helper\FormElement'    => __DIR__ . '/src/XelaxTwbUnmask/Form/View/Helper/FormElement.php',
+  'XelaxTwbUnmask\Form\View\Helper\FormSubmit'     => __DIR__ . '/src/XelaxTwbUnmask/Form/View/Helper/FormSubmit.php',
+  'XelaxTwbUnmask\Form\View\Helper\FormCheckbox'   => __DIR__ . '/src/XelaxTwbUnmask/Form/View/Helper/FormCheckbox.php',
   'XelaxTwbUnmask\Form\View\Helper\FormRow'        => __DIR__ . '/src/XelaxTwbUnmask/Form/View/Helper/FormRow.php',
 );
