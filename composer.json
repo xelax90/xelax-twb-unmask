@@ -18,5 +18,5 @@
             "XelaxTwbUnmask": "src"
         },
         "classmap" : ["Module.php"]
-    },
+    }
 }
