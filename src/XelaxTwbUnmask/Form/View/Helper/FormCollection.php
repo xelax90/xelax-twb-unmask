@@ -32,4 +32,14 @@ class FormCollection extends TwbBundleFormCollection{
 	public function __construct() {
 		$this->setDefaultElementHelper('twbFormRow');
 	}
+	
+	public function render(\Zend\Form\ElementInterface $oElement) {
+        if ($oElement->getOption('value_only') === true && $oElement instanceof \IteratorAggregate) {
+            foreach ($oElement->getIterator() as $oElementOrFieldset) {
+				$oElementOrFieldset->setOption('value_only', true);
+			}
+		}
+		
+		return parent::render($oElement);
+	}
 }

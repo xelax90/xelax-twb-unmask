@@ -38,4 +38,21 @@ class FormElement extends TwbBundleFormElement{
 		$this->addType('radio', 'twbFormRadio');
 		$this->addType('submit', 'twbFormSubmit');
 	}
+	
+	public function render(\Zend\Form\ElementInterface $oElement) {
+		if($oElement->getOption('value_only') === true){
+			$sValue = $oElement->getValue();
+			if($oElement instanceof \Zend\Form\Element\Select){
+				if(isset($oElement->getValueOptions()[$sValue])){
+					$sValue = $oElement->getValueOptions()[$sValue];
+				}
+			}
+			if($oElement instanceof \Zend\Form\Element\Button || $oElement instanceof \Zend\Form\Element\Submit){
+				return '';
+			}
+			return sprintf('<div class="%s">%s</div>', 'form-value-only', $sValue);
+		}
+		
+		return parent::render($oElement);
+	}
 }

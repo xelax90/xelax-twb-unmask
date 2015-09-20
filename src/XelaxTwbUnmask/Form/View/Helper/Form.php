@@ -31,6 +31,9 @@ use Zend\Form\FieldsetInterface;
  * @author schurix
  */
 class Form extends TwbBundleForm{
+	// print values only without inputs
+    const LAYOUT_VALUES = 'values';
+	
 	protected $collectionHelper;
 	
 	protected $rowHelper;
@@ -82,7 +85,11 @@ class Form extends TwbBundleForm{
         if (method_exists($oForm, 'prepare')) {
             $oForm->prepare();
         }
-
+		
+		$sFormClass = $sFormLayout;
+		if($sFormLayout === self::LAYOUT_VALUES){
+			$sFormLayout = parent::LAYOUT_HORIZONTAL;
+		}
         $this->setFormClass($oForm, $sFormLayout);
 
         //Set form role
@@ -107,6 +114,9 @@ class Form extends TwbBundleForm{
                 $aOptions['twb-layout'] = $sFormLayout;
                 $oElement->setOptions($aOptions);
             }
+			if($sFormClass === self::LAYOUT_VALUES){
+				$oElement->setOption('value_only', true);
+			}
 			//------- EDIT
             //$sFormContent .= $oElement instanceof FieldsetInterface ? $oRenderer->formCollection($oElement) : $oRenderer->formRow($oElement);
             $sFormContent .= $oElement instanceof FieldsetInterface ? $collectionHelper($oElement) : $rowHelper($oElement);
