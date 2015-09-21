@@ -50,6 +50,9 @@ class FormElement extends TwbBundleFormElement{
 			if($oElement instanceof \Zend\Form\Element\Button || $oElement instanceof \Zend\Form\Element\Submit){
 				return '';
 			}
+			if($oElement instanceof \Zend\Form\Element\Password){
+				$sValue = '*******';
+			}
 			return sprintf('<div class="%s">%s</div>', 'form-value-only', $sValue);
 		}
 		
