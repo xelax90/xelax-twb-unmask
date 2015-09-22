@@ -21,6 +21,7 @@
 namespace XelaxTwbUnmask\Form\View\Helper;
 
 use TwbBundle\Form\View\Helper\TwbBundleFormElement;
+use Zend\View\Helper\EscapeHtml;
 
 /**
  * Description of FormElement
@@ -28,6 +29,8 @@ use TwbBundle\Form\View\Helper\TwbBundleFormElement;
  * @author schurix
  */
 class FormElement extends TwbBundleFormElement{
+	protected $escapeHtmlHelper;
+	
 	public function __construct(\TwbBundle\Options\ModuleOptions $options) {
 		parent::__construct($options);
 		$this->addClass('TwbBundle\Form\Element\StaticElement', 'formStatic');
@@ -43,8 +46,14 @@ class FormElement extends TwbBundleFormElement{
 		if($oElement->getOption('value_only') === true){
 			$sValue = $oElement->getValue();
 			if($oElement instanceof \Zend\Form\Element\Select){
-				if(isset($oElement->getValueOptions()[$sValue])){
+				if(!is_array($sValue) && isset($oElement->getValueOptions()[$sValue])){
 					$sValue = $oElement->getValueOptions()[$sValue];
+				} elseif(is_array($sValue)){
+					foreach ($sValue as $key => $value) {
+						if(isset($oElement->getValueOptions()[$value])){
+							$sValue[$key] = $oElement->getValueOptions()[$value];
+						}
+					}
 				}
 			}
 			if($oElement instanceof \Zend\Form\Element\Button || $oElement instanceof \Zend\Form\Element\Submit){
@@ -53,9 +62,35 @@ class FormElement extends TwbBundleFormElement{
 			if($oElement instanceof \Zend\Form\Element\Password){
 				$sValue = '*******';
 			}
-			return sprintf('<div class="%s">%s</div>', 'form-value-only', $sValue);
+			if(is_array($sValue)){
+				$sValue = implode(', ', $sValue);
+			}
+			
+			return sprintf('<div class="%s">%s</div>', 'form-value-only', $this->getEscapeHtmlHelper()->__invoke($sValue));
 		}
 		
 		return parent::render($oElement);
 	}
+
+    /**
+     * Retrieve the escapeHtml helper
+     *
+     * @return EscapeHtml
+     */
+    protected function getEscapeHtmlHelper()
+    {
+        if ($this->escapeHtmlHelper) {
+            return $this->escapeHtmlHelper;
+        }
+
+        if (method_exists($this->view, 'plugin')) {
+            $this->escapeHtmlHelper = $this->view->plugin('escapehtml');
+        }
+
+        if (!$this->escapeHtmlHelper instanceof EscapeHtml) {
+            $this->escapeHtmlHelper = new EscapeHtml();
+        }
+
+        return $this->escapeHtmlHelper;
+    }
 }
