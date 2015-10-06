@@ -44,6 +44,8 @@ class FormElement extends TwbBundleFormElement{
 	
 	public function render(\Zend\Form\ElementInterface $oElement) {
 		if($oElement->getOption('value_only') === true){
+			$escapeHtml = true;
+			
 			$sValue = $oElement->getValue();
 			if($oElement instanceof \Zend\Form\Element\Select){
 				if(!is_array($sValue) && isset($oElement->getValueOptions()[$sValue])){
@@ -52,6 +54,22 @@ class FormElement extends TwbBundleFormElement{
 					foreach ($sValue as $key => $value) {
 						if(isset($oElement->getValueOptions()[$value])){
 							$sValue[$key] = $oElement->getValueOptions()[$value];
+						}
+					}
+				}
+			} elseif ($oElement instanceof \Zend\Form\Element\MultiCheckbox){
+				if($oElement->getLabelOption('disable_html_escape')){
+					$escapeHtml = false;
+				}
+				$valueOptions = $oElement->getValueOptions();
+				if(!is_array($sValue)){
+					$sValue = array($sValue);
+				}
+				foreach($sValue as $key => $value){
+					foreach($valueOptions as $vOpt){
+						if($vOpt['value'] == $value){
+							$sValue[$key] = $vOpt['label'];
+							break;
 						}
 					}
 				}
@@ -66,7 +84,12 @@ class FormElement extends TwbBundleFormElement{
 				$sValue = implode(', ', $sValue);
 			}
 			
-			return sprintf('<div class="%s">%s</div>', 'form-value-only', $this->getEscapeHtmlHelper()->__invoke($sValue));
+			$valueHtml = $sValue;
+			if($escapeHtml){
+				$valueHtml = $this->getEscapeHtmlHelper()->__invoke($valueHtml);
+			}
+			
+			return sprintf('<div class="%s">%s</div>', 'form-value-only', $valueHtml);
 		}
 		
 		return parent::render($oElement);
