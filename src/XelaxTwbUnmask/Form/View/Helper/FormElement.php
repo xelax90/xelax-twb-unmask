@@ -89,6 +89,10 @@ class FormElement extends TwbBundleFormElement{
 				$valueHtml = $this->getEscapeHtmlHelper()->__invoke($valueHtml);
 			}
 			
+			if($oElement->getOption('value_use_pre') === true){
+				$valueHtml = '<pre>'.$valueHtml.'</pre>';
+			}
+			
 			return sprintf('<div class="%s">%s</div>', 'form-value-only', $valueHtml);
 		}
 		
