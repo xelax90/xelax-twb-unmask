@@ -33,6 +33,7 @@ use Zend\Form\FieldsetInterface;
 class Form extends TwbBundleForm{
 	// print values only without inputs
     const LAYOUT_VALUES = 'values';
+    const LAYOUT_VALUES_HIDDEN = 'values_hidden';
 	
 	protected $collectionHelper;
 	
@@ -87,7 +88,7 @@ class Form extends TwbBundleForm{
         }
 		
 		$sFormClass = $sFormLayout;
-		if($sFormLayout === self::LAYOUT_VALUES){
+		if($sFormLayout === self::LAYOUT_VALUES || $sFormLayout === self::LAYOUT_VALUES_HIDDEN){
 			$sFormLayout = parent::LAYOUT_HORIZONTAL;
 		}
         $this->setFormClass($oForm, $sFormLayout);
@@ -114,8 +115,17 @@ class Form extends TwbBundleForm{
                 $aOptions['twb-layout'] = $sFormLayout;
                 $oElement->setOptions($aOptions);
             }
-			if($sFormClass === self::LAYOUT_VALUES){
-				$oElement->setOption('value_only', true);
+			if($sFormClass === self::LAYOUT_VALUES || $sFormClass === self::LAYOUT_VALUES_HIDDEN){
+				if($sFormClass === self::LAYOUT_VALUES || !($oElement instanceof \Zend\Form\Element\Button || $oElement instanceof \Zend\Form\Element\Submit)){
+					// render buttons in LAYOUT_VALUES_HIDDEN, but not in LAYOUT_VALUES
+					$oElement->setOption('value_only', true);
+					if($sFormClass === self::LAYOUT_VALUES_HIDDEN){
+						$oElement->setOption('add_hidden', true);
+					}
+					if($oElement instanceof \Zend\Form\Element\Checkbox){
+						$oElement->setAttribute('type', 'text');
+					}
+				}
 			}
 			//------- EDIT
             //$sFormContent .= $oElement instanceof FieldsetInterface ? $oRenderer->formCollection($oElement) : $oRenderer->formRow($oElement);

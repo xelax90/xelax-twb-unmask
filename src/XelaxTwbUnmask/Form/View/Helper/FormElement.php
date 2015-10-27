@@ -22,6 +22,7 @@ namespace XelaxTwbUnmask\Form\View\Helper;
 
 use TwbBundle\Form\View\Helper\TwbBundleFormElement;
 use Zend\View\Helper\EscapeHtml;
+use Zend\Form\Element\Hidden;
 
 /**
  * Description of FormElement
@@ -74,12 +75,22 @@ class FormElement extends TwbBundleFormElement{
 					}
 				}
 			}
+			
+			// ignore buttons
 			if($oElement instanceof \Zend\Form\Element\Button || $oElement instanceof \Zend\Form\Element\Submit){
 				return '';
 			}
+			
+			// hide passwords
 			if($oElement instanceof \Zend\Form\Element\Password){
 				$sValue = '*******';
 			}
+			
+			// hide hidden fields
+			if($oElement instanceof Hidden){
+				$sValue = '';
+			}
+			
 			if(is_array($sValue)){
 				$sValue = implode(', ', $sValue);
 			}
@@ -93,7 +104,15 @@ class FormElement extends TwbBundleFormElement{
 				$valueHtml = '<pre>'.$valueHtml.'</pre>';
 			}
 			
-			return sprintf('<div class="%s">%s</div>', 'form-value-only', $valueHtml);
+			$hidden = '';
+			if($oElement->getOption('add_hidden')){
+				// use default hidden element if requested
+				$hiddenElement = new Hidden($oElement->getName());
+				$hiddenElement->setValue($oElement->getValue());
+				$hidden = $this->render($hiddenElement);
+			}
+			
+			return sprintf('<div class="%s">%s</div>', 'form-value-only', $valueHtml).$hidden;
 		}
 		
 		return parent::render($oElement);

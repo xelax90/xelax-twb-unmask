@@ -37,6 +37,9 @@ class FormCollection extends TwbBundleFormCollection{
         if ($oElement->getOption('value_only') === true && $oElement instanceof \IteratorAggregate) {
             foreach ($oElement->getIterator() as $oElementOrFieldset) {
 				$oElementOrFieldset->setOption('value_only', true);
+				if($oElement->getOption('add_hidden')){
+					$oElementOrFieldset->setOption('add_hidden', true);
+				}
 			}
 		}
 		
