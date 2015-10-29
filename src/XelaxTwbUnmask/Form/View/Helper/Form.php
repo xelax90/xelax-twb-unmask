@@ -35,6 +35,8 @@ class Form extends TwbBundleForm{
     const LAYOUT_VALUES = 'values';
     const LAYOUT_VALUES_HIDDEN = 'values_hidden';
 	
+    protected static $formRowFormat = '<div class="row">%s</div>';
+	
 	protected $collectionHelper;
 	
 	protected $rowHelper;
@@ -132,7 +134,7 @@ class Form extends TwbBundleForm{
             $sFormContent .= $oElement instanceof FieldsetInterface ? $collectionHelper($oElement) : $rowHelper($oElement);
 			//------- END
         }
-        if ($bHasColumnSizes && $sFormLayout !== self::LAYOUT_HORIZONTAL) {
+        if ($bHasColumnSizes && $sFormLayout !== parent::LAYOUT_HORIZONTAL) {
             $sFormContent = sprintf(self::$formRowFormat, $sFormContent);
         }
         return $this->openTag($oForm) . $sFormContent . $this->closeTag();
